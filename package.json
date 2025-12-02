@@ -1,0 +1,16 @@
+{
+  "name": "switch-contract",
+  "version": "1.0.0",
+  "description": "switch token contract (SWC)",
+  "main": "/src/Switch.sol",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0",
+    "hardhat": "^3.0.15",
+    "solc": "^0.8.30"
+  }
+}
