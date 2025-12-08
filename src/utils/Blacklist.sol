@@ -8,7 +8,7 @@ pragma solidity ^0.8.30;
  * @dev
  * - This contract by itself does not block any token movement.
  * - A token that inherits this contract (e.g. `Switch`) must apply the
- *   `whenNotBlacklist` modifier to its transfer/mint/burn logic in order
+ *   `whenNotBlacklist` modifier to its transfer logic in order
  *   for the blacklist policy to actually be enforced.
  * - Blacklist mutations are done only via the internal `_addBlackList` and
  *   `_removeBlackList` helpers (typically wrapped by multisig functions in the inheriting token).

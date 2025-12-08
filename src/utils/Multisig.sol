@@ -14,7 +14,7 @@ import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
  *   - Implement `_hashTyped` to bind EIP-712 typed data to its own domain
  *     (e.g. via OpenZeppelin EIP712 / ERC20Permit).
  *   - Use the predefined typehash constants and `_validateSigs` to protect
- *     privileged admin operations (pause, mint, lock, blacklist, etc.).
+ *     privileged admin operations
  */
 abstract contract Multisig {
     address[5] private _msSigners;
@@ -24,31 +24,27 @@ abstract contract Multisig {
 
     /// @dev EIP-712 typehashes for admin operations (shared by multisig children).
     bytes32 internal constant MS_PAUSE_TYPEHASH =
-        keccak256("Pause(uint256 nonce,uint256 deadline)");
+    keccak256("Pause(uint256 nonce,uint256 deadline)");
     bytes32 internal constant MS_UNPAUSE_TYPEHASH =
-        keccak256("Unpause(uint256 nonce,uint256 deadline)");
-    bytes32 internal constant MS_MINT_TYPEHASH =
-        keccak256("Mint(uint256 amount,uint256 nonce,uint256 deadline)");
-    bytes32 internal constant MS_BURN_TYPEHASH =
-        keccak256("Burn(uint256 amount,uint256 nonce,uint256 deadline)");
+    keccak256("Unpause(uint256 nonce,uint256 deadline)");
     bytes32 internal constant MS_LOCK_FOR_TYPEHASH =
-        keccak256("LockFor(address who,uint256 duration,uint256 nonce,uint256 deadline)");
+    keccak256("LockFor(address who,uint256 duration,uint256 nonce,uint256 deadline)");
     bytes32 internal constant MS_LOCK_UNTIL_TYPEHASH =
-        keccak256("LockUntil(address who,uint256 until,uint256 nonce,uint256 deadline)");
+    keccak256("LockUntil(address who,uint256 until,uint256 nonce,uint256 deadline)");
     bytes32 internal constant MS_UNLOCK_TYPEHASH =
-        keccak256("Unlock(address who,uint256 nonce,uint256 deadline)");
+    keccak256("Unlock(address who,uint256 nonce,uint256 deadline)");
     bytes32 internal constant MS_PRUNE_LOCKS_TYPEHASH =
-        keccak256("PruneLocks(uint256 max,uint256 nonce,uint256 deadline)");
+    keccak256("PruneLocks(uint256 max,uint256 nonce,uint256 deadline)");
     bytes32 internal constant MS_CFG_SIGNERS_TYPEHASH =
-        keccak256("ReconfigureSigners(address[5] msSigners,uint256 nonce,uint256 deadline)");
+    keccak256("ReconfigureSigners(address[5] msSigners,uint256 nonce,uint256 deadline)");
     bytes32 internal constant MS_SET_DEPLOYER_TYPEHASH =
-        keccak256("SetDeployer(address newDeployer,uint256 nonce,uint256 deadline)");
+    keccak256("SetDeployer(address newDeployer,uint256 nonce,uint256 deadline)");
     bytes32 internal constant MS_RESCUE_TYPEHASH =
-        keccak256("RescueERC20(address token,address to,uint256 amount,uint256 nonce,uint256 deadline)");
+    keccak256("RescueERC20(address token,address to,uint256 amount,uint256 nonce,uint256 deadline)");
     bytes32 internal constant MS_ADD_BLACK_TYPEHASH =
-        keccak256("AddBlacklist(address account,uint256 nonce,uint256 deadline)");
+    keccak256("AddBlacklist(address account,uint256 nonce,uint256 deadline)");
     bytes32 internal constant MS_REMOVE_BLACK_TYPEHASH =
-        keccak256("RemoveBlacklist(address account,uint256 nonce,uint256 deadline)");
+    keccak256("RemoveBlacklist(address account,uint256 nonce,uint256 deadline)");
 
     /**
      * @notice Initializes the multisig with a fixed set of 5 signers.

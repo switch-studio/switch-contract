@@ -17,12 +17,12 @@
 ## Architecture
 - **Switch (`src/Switch.sol`)**  
   - ERC20 token implementation that mints the initial supply to the deployer.  
-  - Delegates all admin logic (pause, lock, blacklist, mint, burn) to `Mshelper`.  
+  - Delegates all admin logic (pause, lock, blacklist) to `Mshelper`.  
   - Transfers are only allowed when the contract is not paused, the sender is not locked, and the sender is not blacklisted.
 
 - **Mshelper (`src/utils/Mshelper.sol`)**  
   - Glue layer that combines `ERC20Permit`, `Pausable`, `Blacklist`, `Lockable`, `Multisig`, and `ReentrancyGuard`.  
-  - Exposes multisig-protected admin functions such as `pause`, `unpause`, `mint`, `burn`, `setDeployer`, `lockFor`, `lockUntil`, `unlock`, `pruneExpiredLocks`, `addBlackList`, `removeBlackList`, and `rescueERC20`.
+  - Exposes multisig-protected admin functions such as `pause`, `unpause`, `setDeployer`, `lockFor`, `lockUntil`, `unlock`, `pruneExpiredLocks`, `addBlackList`, `removeBlackList`, and `rescueERC20`.
 
 - **Multisig (`src/utils/Multisig.sol`)**  
   - Generic 3-of-5 EIP-712 multisig helper.  
@@ -38,10 +38,10 @@
 
 ## Admin Flow (Multisig)
 - **Signer set**: 5 distinct multisig signers, with a fixed **3-of-5** threshold.  
-- **Typed data**: Each admin action (pause, mint, burn, lock, blacklist, etc.) has its own EIP-712 typehash.  
+- **Typed data**: Each admin action (pause, lock, blacklist, etc.) has its own EIP-712 typehash.  
 - **Execution pattern**:
   1. Off-chain, at least 3 signers sign the EIP-712 typed data for the desired action.  
-  2. The collected signatures are passed to the corresponding `Mshelper` function (e.g. `pause`, `mint`, `lockFor`).  
+  2. The collected signatures are passed to the corresponding `Mshelper` function (e.g. `pause`, `lockFor`).  
   3. `_validateSigs` checks signatures, threshold, deadline, and nonce, then the action is executed.
 
 ## Development

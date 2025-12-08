@@ -10,7 +10,7 @@ pragma solidity ^0.8.30;
  * - A token that inherits this contract (e.g. `Switch`) is expected to expose
  *   admin functions (typically multisig-controlled) that call the internal
  *   helpers `_lockFor`, `_lockUntil`, `_unlock`, and `_pruneExpired`.
- * - The `whenUnlocked` modifier is intended to be applied to transfer/mint/burn
+ * - The `whenUnlocked` modifier is intended to be applied to transfer
  *   paths so that locked accounts cannot spend until their lock expires or is
  *   explicitly removed.
  */
@@ -170,9 +170,9 @@ abstract contract Lockable {
      *   entries are valid.
      */
     function getLocked(uint256 offset, uint256 limit)
-        external
-        view
-        returns (address[] memory accounts, uint256[] memory untils, uint256 count)
+    external
+    view
+    returns (address[] memory accounts, uint256[] memory untils, uint256 count)
     {
         accounts = new address[](limit);
         untils = new uint256[](limit);

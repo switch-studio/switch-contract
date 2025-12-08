@@ -20,8 +20,7 @@ import {Multisig} from "src/utils/Multisig.sol";
  *   - `ERC20Permit`'s EIP-712 domain for `_hashTyped`.
  * - A token that inherits this contract is expected to:
  *   - Call the `Mshelper` constructor with the 5 multisig signer addresses.
- *   - Set `_deployer` (the account that receives mint/burn admin operations).
- * - External admin functions in this module (pause, mint, lock, blacklist, etc.)
+ * - External admin functions in this module
  *   perform:
  *   - EIP-712 multisig validation via `_msAuth*` helpers, then
  *   - Delegate to the underlying pause/lock/blacklist primitives.
@@ -191,24 +190,6 @@ abstract contract Mshelper is ERC20Permit, Pausable, Blacklist, Lockable, Multis
     function unpause(uint256 deadline, bytes[] calldata sigs) external {
         _msAuthSimple(MS_UNPAUSE_TYPEHASH, deadline, sigs);
         _unpause();
-    }
-
-    /**
-     * @notice Mints tokens to `_deployer` via 3-of-5 multisig approval.
-     * @param amount The number of tokens to mint.
-     */
-    function mint(uint256 amount, uint256 deadline, bytes[] calldata sigs) external {
-        _msAuthUint(MS_MINT_TYPEHASH, amount, deadline, sigs);
-        _mint(_deployer, amount);
-    }
-
-    /**
-     * @notice Burns tokens from `_deployer` via 3-of-5 multisig approval.
-     * @param amount The number of tokens to burn.
-     */
-    function burn(uint256 amount, uint256 deadline, bytes[] calldata sigs) external {
-        _msAuthUint(MS_BURN_TYPEHASH, amount, deadline, sigs);
-        _burn(_deployer, amount);
     }
 
     /**
