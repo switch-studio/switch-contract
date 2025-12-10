@@ -43,17 +43,3 @@
   1. Off-chain, at least 3 signers sign the EIP-712 typed data for the desired action.  
   2. The collected signatures are passed to the corresponding `Mshelper` function (e.g. `pause`, `lockFor`).  
   3. `_validateSigs` checks signatures, threshold, deadline, and nonce, then the action is executed.
-
-## Development
-- **Install dependencies**
-  - `npm install`
-
-- **Compile & test**
-  - Compile and run tasks using Hardhat (installed as a dependency), for example:
-    - `npx hardhat compile`
-    - `npx hardhat test` (tests need to be added)
-
-- **Network configuration**
-  - Network and deployment settings are managed via `hardhat.config.js`.  
-  - Add your preferred networks and deploy scripts according to your environment.
-

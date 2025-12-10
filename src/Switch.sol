@@ -6,7 +6,7 @@ import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20P
 import {Mshelper} from "src/utils/Mshelper.sol";
 
 contract Switch is Mshelper {
-    string constant private NAME = "Switch Token";
+    string constant private NAME = "Switch Coin";
     string constant private SYMBOL = "SWC";
     uint256 constant private INITIAL_SUPPLY = 5_000_000_000 * 1e18;
 
