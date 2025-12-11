@@ -12,6 +12,10 @@
 - **Time-based lock mechanism** to limit spending from specific accounts for a given period
 - **Rescue mechanism** to recover ERC20 tokens accidentally sent to the contract
 
+## Deployment
+- **Network**: BNB Smart Chain (BSC)  
+- **Token address**: [`0x03b60e802f936b18f422862c53dfaad6bf42719f`](https://bscscan.com/token/0x03b60e802f936b18f422862c53dfaad6bf42719f#code)
+
 ## Architecture
 - **Switch (`src/Switch.sol`)**  
   - ERC20 token implementation that mints the initial supply to the deployer.  
