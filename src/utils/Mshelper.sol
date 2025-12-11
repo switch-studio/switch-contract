@@ -4,9 +4,7 @@ pragma solidity ^0.8.30;
 import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import {Blacklist} from "src/utils/Blacklist.sol";
 import {Lockable} from "src/utils/Lockable.sol";
 import {Multisig} from "src/utils/Multisig.sol";
 
@@ -16,16 +14,16 @@ import {Multisig} from "src/utils/Multisig.sol";
  * @dev
  * - This module wires together:
  *   - `Multisig` (3-of-5 EIP-712 multisig validation),
- *   - `Pausable`, `Blacklist`, and `Lockable` admin hooks,
+ *   - `Lockable` admin hooks,
  *   - `ERC20Permit`'s EIP-712 domain for `_hashTyped`.
  * - A token that inherits this contract is expected to:
  *   - Call the `Mshelper` constructor with the 5 multisig signer addresses.
  * - External admin functions in this module
  *   perform:
  *   - EIP-712 multisig validation via `_msAuth*` helpers, then
- *   - Delegate to the underlying pause/lock/blacklist primitives.
+ *   - Delegate to the underlying lock primitives.
  */
-abstract contract Mshelper is ERC20Permit, Pausable, Blacklist, Lockable, Multisig, ReentrancyGuard {
+abstract contract Mshelper is ERC20Permit, Lockable, Multisig, ReentrancyGuard {
     using SafeERC20 for IERC20;
     address internal _deployer;
 
@@ -177,27 +175,10 @@ abstract contract Mshelper is ERC20Permit, Pausable, Blacklist, Lockable, Multis
     }
 
     /**
-     * @notice Pauses token transfers via 3-of-5 multisig approval.
-     */
-    function pause(uint256 deadline, bytes[] calldata sigs) external {
-        _msAuthSimple(MS_PAUSE_TYPEHASH, deadline, sigs);
-        _pause();
-    }
-
-    /**
-     * @notice Unpauses token transfers via 3-of-5 multisig approval.
-     */
-    function unpause(uint256 deadline, bytes[] calldata sigs) external {
-        _msAuthSimple(MS_UNPAUSE_TYPEHASH, deadline, sigs);
-        _unpause();
-    }
-
-    /**
      * @notice Updates the deployer via 3-of-5 multisig approval.
      */
     function setDeployer(address who, uint256 deadline, bytes[] calldata sigs) external {
         require(who != address(0), "MS: zero deployer");
-        require(!_isBlacklisted(who), "MS: blacklisted deployer");
         require(!_isLocked(who), "MS: locked deployer");
         _msAuthAddr(MS_SET_DEPLOYER_TYPEHASH, who, deadline, sigs);
         _deployer = who;
@@ -233,21 +214,5 @@ abstract contract Mshelper is ERC20Permit, Pausable, Blacklist, Lockable, Multis
     function pruneExpiredLocks(uint256 max, uint256 deadline, bytes[] calldata sigs) external {
         _msAuthUint(MS_PRUNE_LOCKS_TYPEHASH, max, deadline, sigs);
         _pruneExpired(max);
-    }
-
-    /**
-     * @notice Adds an account to the blacklist via multisig approval.
-     */
-    function addBlackList(address account, uint256 deadline, bytes[] calldata sigs) external {
-        _msAuthAddr(MS_ADD_BLACK_TYPEHASH, account, deadline, sigs);
-        _addBlackList(account);
-    }
-
-    /**
-     * @notice Removes an account from the blacklist via multisig approval.
-     */
-    function removeBlackList(address account, uint256 deadline, bytes[] calldata sigs) external {
-        _msAuthAddr(MS_REMOVE_BLACK_TYPEHASH, account, deadline, sigs);
-        _removeBlackList(account);
     }
 }

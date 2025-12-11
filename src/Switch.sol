@@ -22,9 +22,7 @@ contract Switch is Mshelper {
     function _update(address from, address to, uint256 value)
         internal
         override
-        whenNotPaused
         whenUnlocked(from)
-        whenNotBlacklist(from)
     {
         super._update(from, to, value);
     }

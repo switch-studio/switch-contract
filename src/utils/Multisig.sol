@@ -23,10 +23,6 @@ abstract contract Multisig {
     uint256 internal _msNonce;
 
     /// @dev EIP-712 typehashes for admin operations (shared by multisig children).
-    bytes32 internal constant MS_PAUSE_TYPEHASH =
-    keccak256("Pause(uint256 nonce,uint256 deadline)");
-    bytes32 internal constant MS_UNPAUSE_TYPEHASH =
-    keccak256("Unpause(uint256 nonce,uint256 deadline)");
     bytes32 internal constant MS_LOCK_FOR_TYPEHASH =
     keccak256("LockFor(address who,uint256 duration,uint256 nonce,uint256 deadline)");
     bytes32 internal constant MS_LOCK_UNTIL_TYPEHASH =
@@ -41,10 +37,6 @@ abstract contract Multisig {
     keccak256("SetDeployer(address newDeployer,uint256 nonce,uint256 deadline)");
     bytes32 internal constant MS_RESCUE_TYPEHASH =
     keccak256("RescueERC20(address token,address to,uint256 amount,uint256 nonce,uint256 deadline)");
-    bytes32 internal constant MS_ADD_BLACK_TYPEHASH =
-    keccak256("AddBlacklist(address account,uint256 nonce,uint256 deadline)");
-    bytes32 internal constant MS_REMOVE_BLACK_TYPEHASH =
-    keccak256("RemoveBlacklist(address account,uint256 nonce,uint256 deadline)");
 
     /**
      * @notice Initializes the multisig with a fixed set of 5 signers.
